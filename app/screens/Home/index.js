@@ -26,7 +26,7 @@ export default (HomeView = createBottomTabNavigator({
     tabBarPosition: 'bottom',
     tabBarComponent: props => {
         return (
-            <Footer style={{height: 30}}>
+            <Footer style={{height: 60*height/668}}>
                 <FooterTab style={{ backgroundColor: '#323337' }}>
                     <Button
                         style={{minWidth: 5}}

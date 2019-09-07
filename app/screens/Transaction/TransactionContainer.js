@@ -9,8 +9,8 @@ export default class TransactionContainer extends Component {
         return (
             <Container>
                 <View>
-                    <Header style={{backgroundColor: '#DF2800',flexDirection: 'column', borderBottomWidth: 0}} >
-                        <Left></Left>
+                    <Header style={{backgroundColor: '#DF2800', borderBottomWidth: 0}} >
+                        <Left><Icon name="dots-three-vertical" type="Entypo" /></Left>
                         <Body><Text style={{color: 'white'}}>Transaksi Anda</Text></Body>
                         <Right></Right>
                     </Header>

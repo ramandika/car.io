@@ -8,13 +8,15 @@ export default class CarContainer extends Component {
     render() {
         return (
             <Container>
-                <Header style={{backgroundColor: '#DF2800'}} >
-                    <Left></Left>
-                    <Body>
-                        <Text style={{color: 'white'}}>Kendaraan Anda</Text>
-                    </Body>
-                    <Right></Right>
-                </Header>
+                <View>
+                    <Header style={{backgroundColor: '#DF2800'}} >
+                        <Left><Icon name="dots-three-vertical" type="Entypo" /></Left>
+                        <Body>
+                            <Text style={{color: 'white'}}>Kendaraan Anda</Text>
+                        </Body>
+                        <Right></Right>
+                    </Header>
+                </View>
                 <Content>
                     <Card>
                         <CardItem>
