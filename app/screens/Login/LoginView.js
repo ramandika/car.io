@@ -11,6 +11,8 @@ class LoginView extends Component {
     };
 
     login(){
+        let a = null;
+        console.log(a.b);
         this.props.navigation.navigate("App")
     }
 
