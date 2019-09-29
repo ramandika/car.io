@@ -11,15 +11,18 @@ import configureStore from 'app/store/configureStore';
 const { persistor, store } = configureStore();
 
 export default class Entrypoint extends Component {
+    constructor() {
+        super();
+        this.state = {
+            isLoading: false,
+            store: configureStore(() => this.setState({ isLoading: false }))
+        };
+    }
+
     render() {
         return (
-            <Provider store={store}>
-                <PersistGate
-                    loading={<ActivityIndicator />}
-                    persistor={persistor}
-                >
-                    <Navigator />
-                </PersistGate>
+            <Provider store={this.state.store}>
+                <Navigator />
             </Provider>
         );
     }

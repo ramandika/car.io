@@ -1,40 +1,20 @@
-import { createStore, compose, applyMiddleware } from 'redux';
-import { persistStore, persistCombineReducers } from 'redux-persist';
-import storage from 'redux-persist/es/storage'; // default: localStorage if web, AsyncStorage if react-native
-import { createLogger } from 'redux-logger';
-import createSagaMiddleware from 'redux-saga';
+//import devTools from "remote-redux-devtools";
+import { createStore, applyMiddleware, compose } from 'redux';
+import thunk from 'redux-thunk';
+import { persistStore } from 'redux-persist';
+import reducer from '../reducers';
 
-import rootReducers from 'app/reducers'; // where reducers is a object of reducers
-import sagas from 'app/sagas';
+export default function configureStore(onCompletion: () => void): any {
+    const enhancer = compose(
+        applyMiddleware(thunk),
+        // devTools({
+        //     name: 'nativestarterkit',
+        //     realtime: true
+        // })
+    );
 
-const config = {
-    key: 'root',
-    storage,
-    blacklist: ['nav', 'loadingReducer'],
-    debug: true //to get useful logging
-};
+    const store = createStore(reducer, enhancer);
+    persistStore(store, onCompletion);
 
-const middleware = [];
-const sagaMiddleware = createSagaMiddleware();
-
-middleware.push(sagaMiddleware);
-
-if (__DEV__) {
-    middleware.push(createLogger());
+    return store;
 }
-
-const reducers = persistCombineReducers(config, rootReducers);
-const enhancers = [applyMiddleware(...middleware)];
-// const initialState = {};
-const persistConfig = { enhancers };
-const store = createStore(reducers, undefined, compose(...enhancers));
-const persistor = persistStore(store, persistConfig, () => {
-    //   console.log('Test', store.getState());
-});
-const configureStore = () => {
-    return { persistor, store };
-};
-
-sagaMiddleware.run(sagas);
-
-export default configureStore;
