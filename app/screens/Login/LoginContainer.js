@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
+import React from 'react';
 import LoginView from './LoginView';
 import { connect } from 'react-redux';
 import * as loginActions from 'app/actions/loginActions';
 
-class LoginContainer extends Component {
+export default class LoginContainer extends React.Component {
     constructor(props) {
         super(props);
     }
@@ -12,16 +12,3 @@ class LoginContainer extends Component {
         return <LoginView {...this.props} />;
     }
 }
-
-function mapStateToProps() {
-    return {};
-}
-function mapDispatchToProps(dispatch) {
-    return {
-        onLogin: (un, pwd) => dispatch(loginActions.requestLogin(un, pwd))
-    };
-}
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(LoginContainer);

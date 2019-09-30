@@ -4,6 +4,11 @@ import {Container, Header, Left, Body, Text, Right, Content, List, ListItem, Ico
 import Images from '@assets/images';
 
 export default class TransactionContainer extends Component {
+    static navigationOptions = ({navigation}) => {
+        return {
+            tabBarVisible: true
+        };
+    }
 
     render() {
         return (

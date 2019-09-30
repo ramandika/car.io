@@ -2,9 +2,9 @@
 import React, { Component } from 'react';
 import { View, Text } from 'react-native';
 import {Icon, Footer, FooterTab, Button} from 'native-base';
-import { createBottomTabNavigator } from 'react-navigation';
+import { TabNavigator } from 'react-navigation';
 import MyTransactions from '../Transaction/TransactionContainer';
-import MyCars from '../Car/CarContainer';
+import CarIndex from '../Car';
 import Dimensions from 'Dimensions';
 
 const {width, height} = Dimensions.get('window');
@@ -19,8 +19,8 @@ const bottomTabTextSize = (w) => {
     }
 };
 
-export default (HomeView = createBottomTabNavigator({
-    MyCars: {screen: MyCars},
+export default (HomeView = TabNavigator({
+    CarIndex: {screen: CarIndex},
     MyTransactions: {screen: MyTransactions}
 },{
     tabBarPosition: 'bottom',
@@ -31,7 +31,7 @@ export default (HomeView = createBottomTabNavigator({
                     <Button
                         style={{minWidth: 5}}
                         vertical 
-                        onPress={() => props.navigation.navigate("MyCars")}>
+                        onPress={() => props.navigation.navigate("CarIndex")}>
                         <Icon name="car-multiple" type="MaterialCommunityIcons" style={props.navigation.state.index === 0 ? {color: 'white'} : {color: '#D3D3D3'}} />
                         <Text style={props.navigation.state.index ===0 ? {color: 'white', fontSize: bottomTabTextSize(width)} : { color: '#D3D3D3', fontSize: bottomTabTextSize(width)}}>Daftar Mobil</Text>
                     </Button>

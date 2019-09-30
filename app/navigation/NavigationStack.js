@@ -1,10 +1,10 @@
-import { createSwitchNavigator, createAppContainer } from 'react-navigation';
+import { SwitchNavigator } from 'react-navigation';
 
-import Login from 'app/screens/Login';
+import Login from 'app/screens/Login/LoginContainer';
 import Loading from 'app/screens/Login/LoadingContainer';
 import Home from 'app/screens/Home';
 
-const RootNavigator =  createSwitchNavigator(
+const RootNavigator =  SwitchNavigator(
     {
         Loading: Loading,
         App: {screen: Home},
@@ -16,6 +16,5 @@ const RootNavigator =  createSwitchNavigator(
     }
 );
 
-const App = createAppContainer(RootNavigator);
 
-export default App;
+export default RootNavigator;

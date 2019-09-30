@@ -9,7 +9,7 @@ export default class AuthLoadingScreen extends React.Component {
 
     componentDidMount(){
         //Simulate auth check
-        this.sleep(5000).then((res) => {
+        this.sleep(0).then((res) => {
             //Go to home or login page based on auth
             this.props.navigation.navigate("Login");
         })
