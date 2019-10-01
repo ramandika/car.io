@@ -1,9 +1,43 @@
 import React, { Component } from 'react';
-import { View, Image } from 'react-native';
+import { View, Image, StyleSheet } from 'react-native';
 import {Container, Header, Content, Text, Left, Body, Right, Card, CardItem, Button, Icon, Thumbnail} from 'native-base';
+import CustomFab from '../CustomFab';
 
 export default class CarView extends Component {
+    constructor(props){
+        super(props);
+        this.state={showOverlay: false};
+        this.refreshAfterUpdate = this.refreshAfterUpdate.bind(this);
+    }
+
+    fabOverlay(overlayState) {
+        this.setState({
+            showOverlay: overlayState
+        });
+    }
+
+    refreshAfterUpdate(){
+        this.setState({showOverlay: false})
+    }
+
     render() {
+        const options = [
+            {
+                title: 'Tambah Mobil',
+                icon: 'car',
+                action_sheet_params: {
+                    action: 'CreateCar', refreshAfterUpdate: this.refreshAfterUpdate
+                }
+            },
+            {
+                title: 'Scan QRCode',
+                icon: 'qrcode',
+                iconType: 'FontAwesome',
+                action_sheet_params: {
+                    action: 'ScanQR', refreshAfterUpdate: this.refreshAfterUpdate
+                }
+            }
+        ];
         return (
             <Container>
                 <View>
@@ -31,7 +65,7 @@ export default class CarView extends Component {
                         </CardItem>
                         <CardItem>
                             <Left>
-                                <Button transparent onPress={() => this.props.navigation.navigate("CarDiagnostic",{id: "avanza-123124123"})}>
+                                <Button transparent onPress={() => this.props.navigation.navigate('CarDiagnostic',{id: 'avanza-123124123'})}>
                                     <Icon active name="speedometer" type="MaterialCommunityIcons" />
                                     <Text>15.123 Km</Text>
                                 </Button>
@@ -85,7 +119,16 @@ export default class CarView extends Component {
                         </CardItem>
                     </Card>
                 </Content>
+                {this.state.showOverlay && <View style={styles.overlay}/>}
+                <CustomFab navigation={this.props.navigation} menu={{options: options}} fabOverlay={this.fabOverlay.bind(this)} />
             </Container>
         );
     }
 }
+
+const styles: any = StyleSheet.create({
+    overlay: {
+        ...StyleSheet.absoluteFillObject,
+        backgroundColor: 'rgba(0,0,0,0.5)'
+	  }
+});
