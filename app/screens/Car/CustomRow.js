@@ -22,7 +22,7 @@ export default class CustomRow extends Component{
                 </CardItem>
                 <CardItem>
                     <Left>
-                        <Button transparent>
+                        <Button transparent onPress={this.props._onPress}>
                             <Icon active name="speedometer" type="MaterialCommunityIcons" />
                             <Text>15.123 Km</Text>
                         </Button>

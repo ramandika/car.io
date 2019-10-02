@@ -19,7 +19,7 @@ class CarView extends Component {
     }
 
     componentDidMount(){
-        this.sleep(10000).then(() => {
+        this.sleep(0).then(() => {
             //Get Car From Server
             axios.get(CONSTANTS.API.GET_CAR_URL,{
                 headers:{
@@ -46,7 +46,7 @@ class CarView extends Component {
 
 
     _onPress = () => {
-        console.log('Pressed');
+        this.props.navigation.navigate("CarDiagnostic")
     }
 
     render() {
@@ -82,7 +82,7 @@ class CarView extends Component {
                     {this.state.cars && 
                         <FlatList 
                             data={this.state.cars} 
-                            renderItem={(item) => <CustomRow item={item} _onPress={this.props._onPress} />} 
+                            renderItem={(item) => <CustomRow item={item} _onPress={this._onPress.bind(this)} />} 
                         />
                     }
                     {!this.state.cars && <View style={{alignItems: 'center', backgroundColor: 'yellow', flex: 1}}><Spinner color='#DF2800'/><Text>Memuat data anda</Text></View>}
