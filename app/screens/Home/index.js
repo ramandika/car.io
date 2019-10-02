@@ -2,9 +2,10 @@
 import React, { Component } from 'react';
 import { View, Text } from 'react-native';
 import {Icon, Footer, FooterTab, Button} from 'native-base';
-import { createBottomTabNavigator } from 'react-navigation';
+import { TabNavigator } from 'react-navigation';
 import MyTransactions from '../Transaction/TransactionContainer';
-import MyCars from '../Car/CarContainer';
+import Car from '../Car';
+import More from '../More'
 import Dimensions from 'Dimensions';
 
 const {width, height} = Dimensions.get('window');
@@ -19,9 +20,10 @@ const bottomTabTextSize = (w) => {
     }
 };
 
-export default (HomeView = createBottomTabNavigator({
-    MyCars: {screen: MyCars},
-    MyTransactions: {screen: MyTransactions}
+export default (HomeView = TabNavigator({
+    CarIndex: {screen: Car},
+    MyTransactions: {screen: MyTransactions},
+    More: {screen: More}
 },{
     tabBarPosition: 'bottom',
     tabBarComponent: props => {
@@ -31,7 +33,7 @@ export default (HomeView = createBottomTabNavigator({
                     <Button
                         style={{minWidth: 5}}
                         vertical 
-                        onPress={() => props.navigation.navigate("MyCars")}>
+                        onPress={() => props.navigation.navigate("CarIndex")}>
                         <Icon name="car-multiple" type="MaterialCommunityIcons" style={props.navigation.state.index === 0 ? {color: 'white'} : {color: '#D3D3D3'}} />
                         <Text style={props.navigation.state.index ===0 ? {color: 'white', fontSize: bottomTabTextSize(width)} : { color: '#D3D3D3', fontSize: bottomTabTextSize(width)}}>Daftar Mobil</Text>
                     </Button>
@@ -41,6 +43,13 @@ export default (HomeView = createBottomTabNavigator({
                         onPress={() => props.navigation.navigate("MyTransactions")}>
                         <Icon name="attach-money" type="MaterialIcons" style={props.navigation.state.index === 1 ? {color: 'white'} : {color: '#D3D3D3'}} />
                         <Text style={props.navigation.state.index ===1 ? {color: 'white', fontSize: bottomTabTextSize(width)} : { color: '#D3D3D3', fontSize: bottomTabTextSize(width)}}>Daftar Transaksi</Text>
+                    </Button>
+                    <Button
+                        style={{minWidth: 5}}
+                        vertical 
+                        onPress={() => props.navigation.navigate("More")}>
+                        <Icon name="gear" type="FontAwesome" style={props.navigation.state.index === 2 ? {color: 'white'} : {color: '#D3D3D3'}} />
+                        <Text style={props.navigation.state.index ===1 ? {color: 'white', fontSize: bottomTabTextSize(width)} : { color: '#D3D3D3', fontSize: bottomTabTextSize(width)}}>More</Text>
                     </Button>
                 </FooterTab>
             </Footer>
