@@ -2,6 +2,8 @@ apply plugin: "com.android.application"
 
 import com.android.build.OutputFile
 
+Project background_geolocation = project(':react-native-background-geolocation')
+apply from: "${background_geolocation.projectDir}/app.gradle"
 /**
  * The react.gradle file registers a task for each build variant (e.g. bundleDebugJsAndAssets
  * and bundleReleaseJsAndAssets).
@@ -139,6 +141,8 @@ android {
 }
 
 dependencies {
+    implementation project(':react-native-background-fetch')
+    implementation project(':react-native-background-geolocation')
     implementation project(':@react-native-community_async-storage')
     implementation project(':react-native-camera')
     implementation project(':react-native-vector-icons')
