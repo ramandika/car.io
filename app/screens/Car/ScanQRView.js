@@ -4,18 +4,30 @@ import {
     StyleSheet,
     Text,
     TouchableOpacity,
-    Linking,
+    Alert,
     View
 } from 'react-native';
 
 import {Container, Content, Header, Left, Icon, Body, Right} from 'native-base';
 import QRCodeScanner from 'react-native-qrcode-scanner';
+import Axios from 'axios';
+import CONSTANTS from '../../constants';
+import { connect } from 'react-redux';
 
-export default class ScanQRView extends Component {
+
+class ScanQRView extends Component {
   onSuccess = (e) => {
-      Linking
-          .openURL(e.data)
-          .catch(err => console.error('An error occured', err));
+      let data = JSON.parse(e.data);
+      Axios.post(CONSTANTS.API.MONITORED_API_URL,data,{
+          headers:{
+              'Authorization': `Bearer ${this.props.token.token}`,
+              'Content-Type': 'application/json'
+          }
+      }).then((response) => {
+          Alert.alert("Sukses", `Berhasil menambahkan ke dalam daftar monitored`, [{ text: "Ok", onPress: () => {this.props.navigation.goBack()}}], { cancelable: false });
+      }).catch((error)=> {
+          console.log(error);
+      });
   }
 
   willGoBack(){
@@ -54,6 +66,13 @@ export default class ScanQRView extends Component {
       );
   }
 }
+
+const mapStateToProps = state => ({
+    token: state.token,
+});
+
+
+export default connect(mapStateToProps)(ScanQRView);
 
 const styles = StyleSheet.create({
     buttonText: {

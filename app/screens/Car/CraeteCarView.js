@@ -1,12 +1,18 @@
 import React, { Component } from 'react';
-import { View, Image, StyleSheet } from 'react-native';
+import { View, Alert } from 'react-native';
 import {Container, Header, Content, Text, Left, Body, Right, Icon, Form, Item, Label, Input, Button} from 'native-base';
 import CustomFab from '../CustomFab';
+import axios from 'axios';
+import CONSTANTS from '../../constants';
+import {connect} from 'react-redux';
+import { getUserToken } from '../../actions/actions';
 
-export default class CarView extends Component {
+
+class CreateCarView extends Component {
     constructor(props){
         super(props);
-        this.state={showOverlay: false};
+        this.state={showOverlay: false, form_data: {}};
+        this._onSubmit = this._onSubmit.bind(this);
     }
 
     fabOverlay(overlayState) {
@@ -18,6 +24,19 @@ export default class CarView extends Component {
     willGoBack(){
         this.props.refreshAfterUpdate;
         this.props.navigation.goBack();
+    }
+
+    _onSubmit = (values) => {
+        axios.post(CONSTANTS.API.CREATE_CAR_URL,{car: values},{
+            'headers':{
+                'Authorization': `Bearer ${this.props.token.token}`,
+                'Content-Type': 'application/json'
+            }
+        }).then((response) => {
+            Alert.alert("Sukses", `Mobil berhasil ditambahkan`, [{ text: "Ok", onPress: () => {this.props.navigation.goBack()}}], { cancelable: false });
+        }).catch((error) => {
+            console.log(error);
+        })
     }
 
     render() {
@@ -56,21 +75,21 @@ export default class CarView extends Component {
                     <Form>
                         <Item floatingLabel>
                             <Label>Label Mobil</Label>
-                            <Input />
+                            <Input onChangeText={(val) => this.setState({form_data: {...this.state.form_data, name: val}})} />
                         </Item>
                         <Item floatingLabel last>
                             <Label>Merek Mobil</Label>
-                            <Input />
+                            <Input onChangeText={(val) => this.setState({form_data: {...this.state.form_data, brand: val}})}/>
                         </Item>
                         <Item floatingLabel last>
                             <Label>Tipe Mobil</Label>
-                            <Input />
+                            <Input onChangeText={(val) => this.setState({form_data: {...this.state.form_data, model: val}})}/>
                         </Item>
                         <Item floatingLabel last>
                             <Label>Tahun Keluar</Label>
-                            <Input />
+                            <Input onChangeText={(val) => this.setState({form_data: {...this.state.form_data, year: val}})}/>
                         </Item>
-                        <Button style={{alignSelf: 'center', justifyContent: 'center', marginTop: 20}}>
+                        <Button onPress={() => this._onSubmit(this.state.form_data)} style={{alignSelf: 'center', justifyContent: 'center', marginTop: 20}}>
                             <Text>Tambah Mobil</Text>
                         </Button>
                     </Form>
@@ -79,3 +98,9 @@ export default class CarView extends Component {
         );
     }
 }
+
+const mapStateToProps = state => ({
+    token: state.token,
+});
+
+export default connect(mapStateToProps)(CreateCarView);
