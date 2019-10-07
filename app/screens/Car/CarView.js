@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, FlatList, StyleSheet } from 'react-native';
+import { View, FlatList, StyleSheet, Dimensions } from 'react-native';
 import {connect} from 'react-redux';
 import {Container, Header, Content, Text, Left, Body, Right, Icon, Spinner} from 'native-base';
 import CustomFab from '../CustomFab';
@@ -45,8 +45,8 @@ class CarView extends Component {
     }
 
 
-    _onPress = () => {
-        this.props.navigation.navigate("CarDiagnostic")
+    _onPress = (item) => {
+        this.props.navigation.navigate("CarDiagnostic",{id: item.user_id})
     }
 
     render() {
@@ -67,6 +67,7 @@ class CarView extends Component {
                 }
             }
         ];
+        const {width, height} = Dimensions.get("window");
         return (
             <Container>
                 <View>
@@ -79,13 +80,15 @@ class CarView extends Component {
                     </Header>
                 </View>
                 <Content>
-                    {this.state.cars && 
+                    {this.state.cars && this.state.cars.length > 0  && 
                         <FlatList 
-                            data={this.state.cars} 
+                            data={this.state.cars}
+                            keyExtractor={item => `${item.id}`}
                             renderItem={(item) => <CustomRow item={item} _onPress={this._onPress.bind(this)} />} 
                         />
                     }
-                    {!this.state.cars && <View style={{alignItems: 'center', backgroundColor: 'yellow', flex: 1}}><Spinner color='#DF2800'/><Text>Memuat data anda</Text></View>}
+                    {this.state.cars && this.state.cars.length === 0 && <View style={{height: height -  60*height/668, justifyContent: 'center', alignItems: 'center'}}><Text style={{marginTop: 20, width: 200, textAlign: 'center'}}>Belum ada mobil yang didaftarkan</Text></View>}
+                    {!this.state.cars && <View style={{alignItems: 'center', flex: 1}}><Spinner color='#DF2800'/><Text>Memuat data anda...</Text></View>}
                 </Content>
                 {this.state.showOverlay && <View style={styles.overlay}/>}
                 <CustomFab navigation={this.props.navigation} menu={{options: options}} fabOverlay={this.fabOverlay.bind(this)} />

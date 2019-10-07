@@ -17,7 +17,7 @@ class CarContainer extends Component {
         BackgroundGeolocation.ready({
             // Geolocation Config
             desiredAccuracy: BackgroundGeolocation.DESIRED_ACCURACY_HIGH,
-            distanceFilter: 10,
+            distanceFilter: 1,
             // Activity Recognition
             stopTimeout: 1,
             // Application config

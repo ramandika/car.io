@@ -27,7 +27,7 @@ class CreateCarView extends Component {
     }
 
     _onSubmit = (values) => {
-        axios.post(CONSTANTS.API.CREATE_CAR_URL,values,{
+        axios.post(CONSTANTS.API.CREATE_CAR_URL,{car: values},{
             'headers':{
                 'Authorization': `Bearer ${this.props.token.token}`,
                 'Content-Type': 'application/json'
