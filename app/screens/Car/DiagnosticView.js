@@ -1,22 +1,47 @@
 import React, { Component } from 'react';
 import { View, Image, StyleSheet } from 'react-native';
-import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
+import MapView, { PROVIDER_GOOGLE, Marker, Polygon } from 'react-native-maps';
 import {Container, Header, Content, Text, Left, Body, Right, Separator, Icon, ListItem, Item, Label, Input} from 'native-base';
 import { connect } from 'react-redux';
 import io from 'socket.io-client';
 import { Alert } from 'react-native';
+import axios from 'axios';
 
 class DiagnosticView extends Component {
     constructor(props){
         super(props);
         this.state={};
+        this.GET_AREA_URL="http://192.168.1.128:8080/api/v1/areas/surrounding_areas";
+        this.lastGetArea = 0;
     }
+
     componentDidMount(){
         this.connectToSocket();
     }
 
     componentWillUnmount(){
         this.disconnectSocket();
+    }
+
+    componentDidUpdate(){
+        //Get All Defined Area
+        let now = Date.now();
+        //Get area nearby every 10 seconds
+        if((now - this.lastGetArea > 10000) && !!this.state.user_location){
+            console.log("GET AREA NEARBY")
+            this.lastGetArea = now;
+            axios.post(this.GET_AREA_URL,{
+                user_location: this.state.user_location
+            },{
+                headers: {
+                    'Authorization': `Bearer ${this.props.token.token}`
+                }
+            }).then((resposne) => {
+                this.setState({areas: resposne.data.areas});
+            }).catch((err) => {
+                console.log(err);
+            })
+        }
     }
 
     connectToSocket(){
@@ -37,6 +62,9 @@ class DiagnosticView extends Component {
                         title: `${data.tractable_device_id}`,
                         position: {latitude: parseFloat(data.latitude), longitude: parseFloat(data.longitude)},
                         description: 'Real location'
+                    },user_location:{
+                        latitude: parseFloat(data.latitude),
+                        longitude: parseFloat(data.longitude)
                     }});
                     map.animateCamera({
                         center: {
@@ -59,7 +87,7 @@ class DiagnosticView extends Component {
     }
 
     render() {
-        const {user} = this.state;
+        const {user, areas} = this.state;
         return (
             <Container>
                 <View>
@@ -78,8 +106,8 @@ class DiagnosticView extends Component {
                         style={styles.map}
                         
                         initialRegion={{
-                            latitude: 37.78825,
-                            longitude: -122.4324,
+                            latitude: -6.2244345,
+                            longitude: 106.8902712,
                             latitudeDelta: 0.0922,
                             longitudeDelta: 0.0421}}>
                         {this.state.user && <Marker
@@ -87,6 +115,7 @@ class DiagnosticView extends Component {
                             title={user.title}
                             description={user.description}
                         />}
+                        {!!areas&& areas.map(area => (<Polygon key={area.id} fillColor="rgba(0,0,0,0.06)" coordinates={area.boundaries} />))}
                     </MapView>
                     <View style={{position: 'absolute', bottom: 20, backgroundColor: 'white', width: '75%', padding: 10}}>
                         <Text>Speed: {(user || {}).speed} m/s</Text>
