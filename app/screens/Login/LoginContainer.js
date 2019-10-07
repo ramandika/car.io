@@ -1,7 +1,5 @@
 import React from 'react';
 import LoginView from './LoginView';
-import { connect } from 'react-redux';
-import * as loginActions from 'app/actions/loginActions';
 
 export default class LoginContainer extends React.Component {
     constructor(props) {
@@ -9,6 +7,6 @@ export default class LoginContainer extends React.Component {
     }
 
     render() {
-        return <LoginView {...this.props} />;
+        return <LoginView {...this.state} navigation={this.props.navigation} />;
     }
 }

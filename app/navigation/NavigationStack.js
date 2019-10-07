@@ -1,14 +1,13 @@
 import { SwitchNavigator } from 'react-navigation';
-
+import Loading from 'app/screens/Login/AuthLoadingContainer';
 import Login from 'app/screens/Login/LoginContainer';
-import Loading from 'app/screens/Login/LoadingContainer';
 import Home from 'app/screens/Home';
 
 const RootNavigator =  SwitchNavigator(
     {
         Loading: Loading,
-        App: {screen: Home},
-        Login: {screen: Login}
+        App: Home,
+        Login: Login
     },
     {
         initialRouteName: 'Loading',

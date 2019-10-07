@@ -2,7 +2,8 @@
  * React Native App
  * Everthing starts from the entrypoint
  */
-import React, { Component } from 'react';
+import React, { Component} from 'react';
+import {Root} from "native-base";
 import { ActivityIndicator } from 'react-native';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/es/integration/react';
@@ -14,6 +15,10 @@ const { persistor, store } = configureStore();
 export default class Entrypoint extends Component {
     constructor(props){
         super(props);
+        this.state = {
+            isLoading: false,
+            store: configureStore(() => this.setState({ isLoading: false }))
+        };
         OneSignal.init('377935ef-2ad2-40bd-9601-511f58455919');
 
         OneSignal.addEventListener('received', this.onReceived);
@@ -44,13 +49,10 @@ export default class Entrypoint extends Component {
 
     render() {
         return (
-            <Provider store={store}>
-                <PersistGate
-                    loading={<ActivityIndicator />}
-                    persistor={persistor}
-                >
+            <Provider store={this.state.store}>
+                <Root>
                     <Navigator />
-                </PersistGate>
+                </Root>
             </Provider>
         );
     }

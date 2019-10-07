@@ -1,9 +1,31 @@
 import React, { Component } from 'react';
 import { View, Image } from 'react-native';
-import {Container, Header, Content, Text, Left, Body, Right, Card, CardItem, Button, Icon, Label} from 'native-base';
+import {Container, Header, Content, Text, Left, Body, Right, Card, CardItem, Button, Icon, Label, Spinner} from 'native-base';
 import QrCode from '../QrCode';
+import axios from 'axios';
+import CONSTANTS from '../../constants';
+import { connect } from 'react-redux';
 
-export default class MyInfoView extends Component {
+class MyInfoView extends Component {
+
+    constructor(props){
+        super(props);
+        this.state={}
+    }
+
+    componentWillMount(){
+        //Authenticate token
+        axios.get(CONSTANTS.API.USER_ME_PATH,{
+            'headers': {'Authorization': `Bearer ${this.props.token.token}`}
+        }).then((response) => {
+            console.log(response);
+            this.setState({user: response.data.user});
+        }).catch((err) => {
+            //Error when get user profile
+            console.log(err);
+        });
+    }
+
     render() {
         const {user} = this.props;
         const defaultPhoto = 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Circle-icons-profile.svg/1024px-Circle-icons-profile.svg.png';
@@ -38,7 +60,8 @@ export default class MyInfoView extends Component {
                         </View>
                     </View>
                     <View>
-                        <QrCode value="https://www.npmjs.com/package/react-native-qrcode" />
+                        {this.state.user && <QrCode value={JSON.stringify(this.state.user)} />}
+                        {!this.state.user && <Spinner />}
                         <Text style={{alignSelf: 'center', marginTop: 10}}>Scan barcode untuk share location</Text>
                     </View>
                 </Content>
@@ -46,3 +69,10 @@ export default class MyInfoView extends Component {
         );
     }
 }
+
+const mapStateToProps = state => ({
+    token: state.token,
+});
+
+
+export default connect(mapStateToProps)(MyInfoView);
