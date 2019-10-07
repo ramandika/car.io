@@ -28,7 +28,7 @@ class LoginView extends Component {
         }).then((response)=> {
             console.log(response);
             this.props.saveUserToken(response.data.token);
-            this.props.navigation.navigate('App');
+            this.props.navigation.navigate('Loading');
         }).catch((error) => {
             console.log(error);
         });
