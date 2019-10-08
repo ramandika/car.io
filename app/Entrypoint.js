@@ -12,8 +12,8 @@ import configureStore from 'app/store/configureStore';
 const { persistor, store } = configureStore();
 
 export default class Entrypoint extends Component {
-    constructor() {
-        super();
+    constructor(props){
+        super(props);
         this.state = {
             isLoading: false,
             store: configureStore(() => this.setState({ isLoading: false }))
