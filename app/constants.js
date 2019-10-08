@@ -6,6 +6,7 @@ export default {
         GET_CAR_URL: 'http://192.168.1.128:8080/api/v1/cars',
         CREATE_CAR_URL: 'http://192.168.1.128:8080/api/v1/cars',
         GEOLOCATION_API_URL: 'http://192.168.1.128:8080/api/v1/geolocations',
-        MONITORED_API_URL: 'http://192.168.1.128:8080/api/v1/cars/qr_scan'
+        MONITORED_API_URL: 'http://192.168.1.128:8080/api/v1/cars/qr_scan',
+        UPDATE_ONE_SIGNAL_ID: 'http://192.168.1.128:8080/api/v1/users'
     }
 };
