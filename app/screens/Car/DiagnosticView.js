@@ -6,12 +6,12 @@ import { connect } from 'react-redux';
 import io from 'socket.io-client';
 import { Alert } from 'react-native';
 import axios from 'axios';
+import CONSTANTS from '../../constants';
 
 class DiagnosticView extends Component {
     constructor(props){
         super(props);
         this.state={};
-        this.GET_AREA_URL="http://192.168.1.128:8080/api/v1/areas/surrounding_areas";
         this.lastGetArea = 0;
     }
 
@@ -30,7 +30,7 @@ class DiagnosticView extends Component {
         if((now - this.lastGetArea > 10000) && !!this.state.user_location){
             console.log("GET AREA NEARBY")
             this.lastGetArea = now;
-            axios.post(this.GET_AREA_URL,{
+            axios.post(CONSTANTS.GET_AREA_URL,{
                 user_location: this.state.user_location
             },{
                 headers: {
@@ -49,7 +49,7 @@ class DiagnosticView extends Component {
         let setState = this.setState.bind(this);
         let map = this.map;
         let navigation = this.props.navigation;
-        this.socket = io('http://192.168.1.128:3000', {
+        this.socket = io(CONSTANTS.API.SOCKET_URL, {
             secure: true,
             transports: ['websocket'],
         });

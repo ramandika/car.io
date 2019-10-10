@@ -49,6 +49,7 @@ class LoginView extends Component {
                 this.setState({phone_number: phone_number})
             }
         }).catch((error) => {
+            console.log(error);
             Toast.show({
                 text: error.message,
                 buttonText: "Okay",
